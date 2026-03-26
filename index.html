@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.V. Overvecht De Dreef | Club Systeem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- STYLING (Hetzelfde als je vorige site) --- */
+        :root {
+            --dreef-blauw: #0d061a;
+            --dreef-rood: #cc0000;
+            --achtergrond: #f4f7f9;
+            --sidebar-breedte: 260px;
+            --wit: #ffffff;
+        }
+
+        body { font-family: 'Roboto', sans-serif; background: var(--achtergrond); margin: 0; display: flex; min-height: 100vh; color: #333; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-breedte);
+            background: var(--dreef-rood);
+            color: white;
+            position: fixed;
+            height: 100%;
+            border-right: 6px solid var(--dreef-blauw);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+            z-index: 100;
+        }
+
+        .sidebar-title { font-family: 'Oswald', sans-serif; font-size: 1.2rem; text-align: center; text-transform: uppercase; margin-bottom: 20px; }
+
+        .nav-button {
+            width: 85%; background: var(--dreef-blauw); border: 2px solid rgba(255,255,255,0.2);
+            color: white; padding: 12px; margin: 5px 0; cursor: pointer;
+            font-family: 'Oswald', sans-serif; text-transform: uppercase; border-radius: 12px;
+        }
+
+        /* CONTENT */
+        .main-content { margin-left: var(--sidebar-breedte); flex: 1; padding: 40px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 900px; }
+
+        .card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .card-header { background: var(--dreef-rood); color: white; padding: 15px; font-family: 'Oswald', sans-serif; text-align: center; text-transform: uppercase; }
+
+        /* TABEL & TOPSCORERS */
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { background: #f8f9fa; padding: 12px; text-align: left; border-bottom: 2px solid #eee; }
+        td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+        tr.highlight { background-color: #fff0f0; font-weight: 900; }
+
+        .score-row { display: flex; justify-content: space-between; padding: 15px 25px; border-bottom: 1px solid #eee; font-weight: 700; }
+        .score-row span:last-child { color: var(--dreef-rood); font-family: 'Oswald', sans-serif; }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { position: relative; width: 100%; height: auto; border-right: none; }
+            .main-content { margin-left: 0; padding: 20px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-title">S.V. OVERVECHT <br> DE DREEF</div>
+        <button class="nav-button" onclick="showPage('home')">Home</button>
+        <button class="nav-button" onclick="showPage('stand')">Stand & Teams</button>
+        <button class="nav-button" onclick="showPage('topscorers')">Topscorers</button>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+
+            <section id="home" class="page-section" style="display:block;">
+                <div class="card">
+                    <div class="card-header">Mededeling</div>
+                    <div id="mededeling-box" style="padding: 25px; line-height: 1.6;">
+                        </div>
+                </div>
+            </section>
+
+            <section id="stand" class="page-section" style="display:none;">
+                <div class="card">
+                    <div class="card-header">Ranglijst (Sorteert Automatisch)</div>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr><th>#</th><th>Team</th><th>G</th><th>W</th><th>P</th><th>+</th><th>-</th></tr>
+                            </thead>
+                            <tbody id="stand-tabel">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="topscorers" class="page-section" style="display:none;">
+                <div class="card">
+                    <div class="card-header">Topscorers Club</div>
+                    <div id="topscorers-lijst">
+                        </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // ==========================================
+        // HIER PAS JE ALLES AAN (SUPER SIMPEL)
+        // ==========================================
+
+        const MIJN_CLUB_DATA = {
+            // Pas hier de teams aan. De computer zet ze zelf op de juiste plek!
+            teams: [
+                { naam: "S.V. Overvecht De Dreef 14-2", g: 5, w: 4, p: 13, plus: 28, min: 7, isEigenTeam: true },
+                { naam: "Sporting '70 14-2", g: 6, w: 4, p: 13, plus: 30, min: 20, isEigenTeam: false },
+                { naam: "Saestum 14-1", g: 6, w: 3, p: 11, plus: 21, min: 19, isEigenTeam: false },
+                { naam: "Hercules 14-3", g: 5, w: 3, p: 10, plus: 20, min: 10, isEigenTeam: false }
+            ],
+
+            // Pas hier de topscorers aan
+            topscorers: [
+                { naam: "Mohammed K.", goals: 12 },
+                { naam: "Julian", goals: 8 },
+                { naam: "Yassin", goals: 5 }
+            ],
+
+            // Pas hier je mededeling aan
+            bericht: `
+                <strong>AANKOMEND ZATERDAG:</strong><br>
+                Beste ouders en jongens, we gaan weer strijden!<br><br>
+                🚩 1 vlagger nodig<br>
+                🚗 Rijders gezocht<br><br>
+                Groet, Trainer Julian 💪⚽
+            `
+        };
+
+        // ==========================================
+        // DE AUTOMATISCHE FUNCTIES (HOEF JE NIET AAN TE ZITTEN)
+        // ==========================================
+
+        function laadWebsite() {
+            // Sorteer teams op punten (p)
+            const gesorteerd = MIJN_CLUB_DATA.teams.sort((a, b) => b.p - a.p);
+            
+            const tabel = document.getElementById('stand-tabel');
+            tabel.innerHTML = '';
+            gesorteerd.forEach((t, i) => {
+                tabel.innerHTML += `
+                    <tr class="${t.isEigenTeam ? 'highlight' : ''}">
+                        <td>${i + 1}</td>
+                        <td>${t.naam}</td>
+                        <td>${t.g}</td><td>${t.w}</td><td><strong>${t.p}</strong></td>
+                        <td>${t.plus}</td><td>${t.min}</td>
+                    </tr>`;
+            });
+
+            // Laad topscorers
+            const lijst = document.getElementById('topscorers-lijst');
+            lijst.innerHTML = '';
+            MIJN_CLUB_DATA.topscorers.sort((a,b) => b.goals - a.goals).forEach((s, i) => {
+                lijst.innerHTML += `<div class="score-row"><span>${i+1}. ${s.naam}</span><span>${s.goals} goals</span></div>`;
+            });
+
+            // Bericht
+            document.getElementById('mededeling-box').innerHTML = MIJN_CLUB_DATA.bericht;
+        }
+
+        function showPage(id) {
+            document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+        }
+
+        // Starten
+        laadWebsite();
+    </script>
+</body>
+</html>
