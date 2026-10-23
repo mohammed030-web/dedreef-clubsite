@@ -3,181 +3,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.V. Overvecht De Dreef | Club Systeem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>S.V. Overvecht De Dreef</title>
+    <!-- Fonts & Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --dreef-blauw: #0d061a;
             --dreef-rood: #cc0000;
-            --achtergrond: #f4f7f9;
-            --sidebar-breedte: 260px;
+            --dreef-rood-hover: #b30000;
+            --achtergrond: #f4f6f9;
+            --sidebar-breedte: 270px;
             --wit: #ffffff;
+            --rand-kleur: #e2e8f0;
+            --tekst-donker: #1e293b;
+            --tekst-licht: #64748b;
         }
 
-        * { box-sizing: border-box; }
-        body { font-family: 'Roboto', sans-serif; background: var(--achtergrond); margin: 0; display: flex; min-height: 100vh; color: #333; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        /* SIDEBAR */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--achtergrond);
+            color: var(--tekst-donker);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR --- */
         .sidebar {
             width: var(--sidebar-breedte);
-            background: var(--dreef-rood);
-            color: white;
+            background: var(--dreef-blauw);
+            color: var(--wit);
             position: fixed;
-            height: 100%;
-            border-right: 6px solid var(--dreef-blauw);
+            top: 0;
+            bottom: 0;
+            left: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding-top: 40px;
+            border-right: 4px solid var(--dreef-rood);
             z-index: 100;
         }
 
-        .sidebar-title { 
-            font-family: 'Oswald', sans-serif; 
-            font-size: 1.3rem; 
-            text-align: center; 
-            text-transform: uppercase; 
-            margin-bottom: 30px; 
+        .sidebar-header {
+            padding: 30px 20px 20px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.4rem;
+            text-transform: uppercase;
             letter-spacing: 1px;
-            line-height: 1.4;
+            line-height: 1.2;
+            color: var(--wit);
+        }
+
+        .sidebar-title span {
+            color: var(--dreef-rood);
+        }
+
+        .sidebar-menu {
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
         }
 
         .nav-button {
-            width: 85%; 
-            background: var(--dreef-blauw); 
-            border: 2px solid rgba(255,255,255,0.2);
-            color: white; 
-            padding: 12px 16px; 
-            margin: 6px 0; 
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 12px 16px;
             cursor: pointer;
-            font-family: 'Oswald', sans-serif; 
-            text-transform: uppercase; 
-            border-radius: 12px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             transition: all 0.2s ease;
-            letter-spacing: 0.5px;
-            font-size: 1rem;
+        }
+
+        .nav-button i {
+            width: 20px;
+            height: 20px;
         }
 
         .nav-button:hover {
-            border-color: white;
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--wit);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .nav-button.active {
-            background: white;
-            color: var(--dreef-rood);
-            border-color: white;
-            font-weight: 900;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: var(--dreef-rood);
+            color: var(--wit);
+            border-color: var(--dreef-rood);
+            box-shadow: 0 4px 12px rgba(204, 0, 0, 0.3);
         }
 
-        /* CONTENT */
-        .main-content { 
-            margin-left: var(--sidebar-breedte); 
-            flex: 1; 
-            padding: 40px; 
-            display: flex; 
-            justify-content: center; 
+        /* --- CONTENT AREA --- */
+        .main-content {
+            margin-left: var(--sidebar-breedte);
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
         }
-        
-        .container { width: 100%; max-width: 900px; }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+        }
 
         .page-section {
-            animation: fadeIn 0.3s ease-in-out;
+            display: none;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
+        .page-section.active {
+            display: block;
         }
 
-        .card { 
-            background: white; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            margin-bottom: 30px; 
+        /* --- CARDS & PANELS --- */
+        .card {
+            background: var(--wit);
+            border-radius: 12px;
+            border: 1px solid var(--rand-kleur);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            margin-bottom: 25px;
         }
-        
-        .card-header { 
-            background: var(--dreef-rood); 
-            color: white; 
-            padding: 16px 20px; 
-            font-family: 'Oswald', sans-serif; 
-            font-size: 1.1rem;
+
+        .card-header {
+            background: var(--dreef-blauw);
+            color: var(--wit);
+            padding: 16px 24px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
-            text-align: center; 
-            text-transform: uppercase; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 3px solid var(--dreef-rood);
         }
 
-        /* TABEL & TOPSCORERS */
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th { background: #f8f9fa; padding: 14px 12px; text-align: left; border-bottom: 2px solid #eee; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px; color: #444; }
-        td { padding: 12px; border-bottom: 1px solid #f0f0f0; }
-        tr:hover td { background-color: #fafbfc; }
-        tr.highlight td { background-color: #fff4f4; font-weight: 900; color: var(--dreef-rood); }
+        .card-header i {
+            color: var(--dreef-rood);
+        }
 
-        .score-row { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 16px 25px; 
-            border-bottom: 1px solid #eee; 
+        .card-body {
+            padding: 24px;
+        }
+
+        /* MEDEDELING BOX */
+        .mededeling-content {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--tekst-donker);
+        }
+
+        /* --- TABELLEN --- */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 14px 16px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            color: var(--tekst-licht);
+            border-bottom: 2px solid var(--rand-kleur);
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--rand-kleur);
+            color: var(--tekst-donker);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr.highlight {
+            background-color: #fef2f2;
             font-weight: 700;
-            transition: background 0.15s;
         }
-        .score-row:hover { background: #fafbfc; }
-        .score-row span:last-child { color: var(--dreef-rood); font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
 
-        @media (max-width: 900px) {
-            body { flex-direction: column; }
-            .sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 6px solid var(--dreef-blauw); padding: 25px 0; }
-            .sidebar-title { margin-bottom: 15px; }
-            .nav-button { width: 90%; max-width: 350px; }
-            .main-content { margin-left: 0; padding: 20px 15px; }
+        tr.highlight td {
+            color: var(--dreef-rood);
+        }
+
+        .team-badge {
+            display: inline-block;
+            background: var(--dreef-rood);
+            color: var(--wit);
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+        }
+
+        /* --- TOPSCORERS LIJST --- */
+        .score-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--rand-kleur);
+            font-size: 1rem;
+        }
+
+        .score-row:last-child {
+            border-bottom: none;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+        }
+
+        .rank {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            width: 28px;
+            height: 28px;
+            background: #f1f5f9;
+            color: var(--tekst-licht);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rank.top-1 { background: #fef3c7; color: #d97706; font-weight: 700; }
+        .rank.top-2 { background: #e2e8f0; color: #475569; font-weight: 700; }
+        .rank.top-3 { background: #ffedd5; color: #c2410c; font-weight: 700; }
+
+        .goals-count {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            color: var(--dreef-rood);
+            font-weight: 700;
+        }
+
+        /* RESPONSIVE DESIGNS */
+        @media (max-width: 850px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 4px solid var(--dreef-rood);
+            }
+
+            .sidebar-header {
+                padding: 20px;
+            }
+
+            .sidebar-menu {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+                padding: 10px 15px 20px 15px;
+            }
+
+            .nav-button {
+                width: auto;
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px 12px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- SIDEBAR MET ICOONEN -->
     <nav class="sidebar">
-        <div class="sidebar-title">S.V. OVERVECHT <br> DE DREEF</div>
-        <button class="nav-button active" onclick="showPage('home', this)">Home</button>
-        <button class="nav-button" onclick="showPage('stand', this)">Stand & Teams</button>
-        <button class="nav-button" onclick="showPage('topscorers', this)">Topscorers</button>
+        <div class="sidebar-header">
+            <div class="sidebar-title">S.V. OVERVECHT<br><span>DE DREEF</span></div>
+        </div>
+        <div class="sidebar-menu">
+            <button class="nav-button active" onclick="showPage('home', this)">
+                <i data-lucide="home"></i> Home
+            </button>
+            <button class="nav-button" onclick="showPage('stand', this)">
+                <i data-lucide="trophy"></i> Stand & Teams
+            </button>
+            <button class="nav-button" onclick="showPage('topscorers', this)">
+                <i data-lucide="target"></i> Topscorers
+            </button>
+        </div>
     </nav>
 
+    <!-- CONTENT -->
     <main class="main-content">
         <div class="container">
 
-            <section id="home" class="page-section" style="display:block;">
+            <!-- HOME SECTIE -->
+            <section id="home" class="page-section active">
                 <div class="card">
-                    <div class="card-header">Mededeling</div>
-                    <div id="mededeling-box" style="padding: 25px; line-height: 1.6;">
+                    <div class="card-header">
+                        <i data-lucide="megaphone"></i> Laatste Mededeling
+                    </div>
+                    <div class="card-body">
+                        <div id="mededeling-box" class="mededeling-content"></div>
                     </div>
                 </div>
             </section>
 
-            <section id="stand" class="page-section" style="display:none;">
+            <!-- STAND & TEAMS SECTIE -->
+            <section id="stand" class="page-section">
                 <div class="card">
-                    <div class="card-header">Ranglijst (Sorteert Automatisch)</div>
-                    <div style="overflow-x: auto;">
+                    <div class="card-header">
+                        <i data-lucide="list-ordered"></i> Competitiestand
+                    </div>
+                    <div class="table-responsive">
                         <table>
                             <thead>
-                                <tr><th>#</th><th>Team</th><th>G</th><th>W</th><th>P</th><th>+</th><th>-</th></tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Team</th>
+                                    <th>G</th>
+                                    <th>W</th>
+                                    <th>P</th>
+                                    <th>+</th>
+                                    <th>-</th>
+                                </tr>
                             </thead>
-                            <tbody id="stand-tabel">
-                            </tbody>
+                            <tbody id="stand-tabel"></tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <section id="topscorers" class="page-section" style="display:none;">
+            <!-- TOPSCORERS SECTIE -->
+            <section id="topscorers" class="page-section">
                 <div class="card">
-                    <div class="card-header">Topscorers Club</div>
-                    <div id="topscorers-lijst">
+                    <div class="card-header">
+                        <i data-lucide="award"></i> Topscorers Club
                     </div>
+                    <div id="topscorers-lijst" class="score-list"></div>
                 </div>
             </section>
 
@@ -185,10 +390,7 @@
     </main>
 
     <script>
-        // ==========================================
-        // JOUW CLUB DATA
-        // ==========================================
-
+        // DATA OBJECT
         const MIJN_CLUB_DATA = {
             teams: [
                 { naam: "S.V. Overvecht De Dreef 14-2", g: 5, w: 4, p: 13, plus: 28, min: 7, isEigenTeam: true },
@@ -204,7 +406,7 @@
             ],
 
             bericht: `
-                <strong>AANKOMEND ZATERDAG:</strong><br>
+                <strong>AANKOMEND ZATERDAG:</strong><br><br>
                 Beste ouders en jongens, we gaan weer strijden!<br><br>
                 🚩 1 vlagger nodig<br>
                 🚗 Rijders gezocht<br><br>
@@ -212,43 +414,64 @@
             `
         };
 
-        // ==========================================
-        // FUNCTIES
-        // ==========================================
-
+        // INLADEN VAN DE WEBSITE
         function laadWebsite() {
+            // Stand inladen & automatisch sorteren op punten
             const gesorteerd = MIJN_CLUB_DATA.teams.sort((a, b) => b.p - a.p);
-            
             const tabel = document.getElementById('stand-tabel');
             tabel.innerHTML = '';
+            
             gesorteerd.forEach((t, i) => {
                 tabel.innerHTML += `
                     <tr class="${t.isEigenTeam ? 'highlight' : ''}">
                         <td>${i + 1}</td>
-                        <td>${t.naam}</td>
-                        <td>${t.g}</td><td>${t.w}</td><td><strong>${t.p}</strong></td>
-                        <td>${t.plus}</td><td>${t.min}</td>
+                        <td>${t.naam} ${t.isEigenTeam ? '<span class="team-badge">ONS TEAM</span>' : ''}</td>
+                        <td>${t.g}</td>
+                        <td>${t.w}</td>
+                        <td><strong>${t.p}</strong></td>
+                        <td>${t.plus}</td>
+                        <td>${t.min}</td>
                     </tr>`;
             });
 
+            // Topscorers inladen & automatisch sorteren op goals
             const lijst = document.getElementById('topscorers-lijst');
             lijst.innerHTML = '';
-            MIJN_CLUB_DATA.topscorers.sort((a,b) => b.goals - a.goals).forEach((s, i) => {
-                lijst.innerHTML += `<div class="score-row"><span>${i+1}. ${s.naam}</span><span>${s.goals} goals</span></div>`;
+            
+            MIJN_CLUB_DATA.topscorers.sort((a, b) => b.goals - a.goals).forEach((s, i) => {
+                let rankClass = '';
+                if (i === 0) rankClass = 'top-1';
+                else if (i === 1) rankClass = 'top-2';
+                else if (i === 2) rankClass = 'top-3';
+
+                lijst.innerHTML += `
+                    <div class="score-row">
+                        <div class="player-info">
+                            <span class="rank ${rankClass}">${i + 1}</span>
+                            <span>${s.naam}</span>
+                        </div>
+                        <span class="goals-count">${s.goals} goals</span>
+                    </div>`;
             });
 
+            // Mededeling inladen
             document.getElementById('mededeling-box').innerHTML = MIJN_CLUB_DATA.bericht;
+
+            // Lucide Iconen initialiseren
+            lucide.createIcons();
         }
 
+        // SWITOHEN TUSSEN PAGINA'S
         function showPage(id, btn) {
-            document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
 
             document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
         }
 
-        laadWebsite();
+        // Starten bij laden
+        window.onload = laadWebsite;
     </script>
 </body>
 </html>
