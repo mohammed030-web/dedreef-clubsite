@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S.V. Overvecht De Dreef | Club Systeem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* --- STYLING (Hetzelfde als je vorige site) --- */
         :root {
             --dreef-blauw: #0d061a;
             --dreef-rood: #cc0000;
@@ -15,6 +14,7 @@
             --wit: #ffffff;
         }
 
+        * { box-sizing: border-box; }
         body { font-family: 'Roboto', sans-serif; background: var(--achtergrond); margin: 0; display: flex; min-height: 100vh; color: #333; }
 
         /* SIDEBAR */
@@ -32,34 +32,109 @@
             z-index: 100;
         }
 
-        .sidebar-title { font-family: 'Oswald', sans-serif; font-size: 1.2rem; text-align: center; text-transform: uppercase; margin-bottom: 20px; }
+        .sidebar-title { 
+            font-family: 'Oswald', sans-serif; 
+            font-size: 1.3rem; 
+            text-align: center; 
+            text-transform: uppercase; 
+            margin-bottom: 30px; 
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
 
         .nav-button {
-            width: 85%; background: var(--dreef-blauw); border: 2px solid rgba(255,255,255,0.2);
-            color: white; padding: 12px; margin: 5px 0; cursor: pointer;
-            font-family: 'Oswald', sans-serif; text-transform: uppercase; border-radius: 12px;
+            width: 85%; 
+            background: var(--dreef-blauw); 
+            border: 2px solid rgba(255,255,255,0.2);
+            color: white; 
+            padding: 12px 16px; 
+            margin: 6px 0; 
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif; 
+            text-transform: uppercase; 
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+            font-size: 1rem;
+        }
+
+        .nav-button:hover {
+            border-color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav-button.active {
+            background: white;
+            color: var(--dreef-rood);
+            border-color: white;
+            font-weight: 900;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         /* CONTENT */
-        .main-content { margin-left: var(--sidebar-breedte); flex: 1; padding: 40px; display: flex; justify-content: center; }
+        .main-content { 
+            margin-left: var(--sidebar-breedte); 
+            flex: 1; 
+            padding: 40px; 
+            display: flex; 
+            justify-content: center; 
+        }
+        
         .container { width: 100%; max-width: 900px; }
 
-        .card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .card-header { background: var(--dreef-rood); color: white; padding: 15px; font-family: 'Oswald', sans-serif; text-align: center; text-transform: uppercase; }
+        .page-section {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card { 
+            background: white; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            margin-bottom: 30px; 
+        }
+        
+        .card-header { 
+            background: var(--dreef-rood); 
+            color: white; 
+            padding: 16px 20px; 
+            font-family: 'Oswald', sans-serif; 
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            text-align: center; 
+            text-transform: uppercase; 
+        }
 
         /* TABEL & TOPSCORERS */
-        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        th { background: #f8f9fa; padding: 12px; text-align: left; border-bottom: 2px solid #eee; }
-        td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
-        tr.highlight { background-color: #fff0f0; font-weight: 900; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { background: #f8f9fa; padding: 14px 12px; text-align: left; border-bottom: 2px solid #eee; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px; color: #444; }
+        td { padding: 12px; border-bottom: 1px solid #f0f0f0; }
+        tr:hover td { background-color: #fafbfc; }
+        tr.highlight td { background-color: #fff4f4; font-weight: 900; color: var(--dreef-rood); }
 
-        .score-row { display: flex; justify-content: space-between; padding: 15px 25px; border-bottom: 1px solid #eee; font-weight: 700; }
-        .score-row span:last-child { color: var(--dreef-rood); font-family: 'Oswald', sans-serif; }
+        .score-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 16px 25px; 
+            border-bottom: 1px solid #eee; 
+            font-weight: 700;
+            transition: background 0.15s;
+        }
+        .score-row:hover { background: #fafbfc; }
+        .score-row span:last-child { color: var(--dreef-rood); font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
 
         @media (max-width: 900px) {
             body { flex-direction: column; }
-            .sidebar { position: relative; width: 100%; height: auto; border-right: none; }
-            .main-content { margin-left: 0; padding: 20px 10px; }
+            .sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 6px solid var(--dreef-blauw); padding: 25px 0; }
+            .sidebar-title { margin-bottom: 15px; }
+            .nav-button { width: 90%; max-width: 350px; }
+            .main-content { margin-left: 0; padding: 20px 15px; }
         }
     </style>
 </head>
@@ -67,9 +142,9 @@
 
     <nav class="sidebar">
         <div class="sidebar-title">S.V. OVERVECHT <br> DE DREEF</div>
-        <button class="nav-button" onclick="showPage('home')">Home</button>
-        <button class="nav-button" onclick="showPage('stand')">Stand & Teams</button>
-        <button class="nav-button" onclick="showPage('topscorers')">Topscorers</button>
+        <button class="nav-button active" onclick="showPage('home', this)">Home</button>
+        <button class="nav-button" onclick="showPage('stand', this)">Stand & Teams</button>
+        <button class="nav-button" onclick="showPage('topscorers', this)">Topscorers</button>
     </nav>
 
     <main class="main-content">
@@ -79,7 +154,7 @@
                 <div class="card">
                     <div class="card-header">Mededeling</div>
                     <div id="mededeling-box" style="padding: 25px; line-height: 1.6;">
-                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -92,7 +167,7 @@
                                 <tr><th>#</th><th>Team</th><th>G</th><th>W</th><th>P</th><th>+</th><th>-</th></tr>
                             </thead>
                             <tbody id="stand-tabel">
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -102,7 +177,7 @@
                 <div class="card">
                     <div class="card-header">Topscorers Club</div>
                     <div id="topscorers-lijst">
-                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -111,11 +186,10 @@
 
     <script>
         // ==========================================
-        // HIER PAS JE ALLES AAN (SUPER SIMPEL)
+        // JOUW CLUB DATA
         // ==========================================
 
         const MIJN_CLUB_DATA = {
-            // Pas hier de teams aan. De computer zet ze zelf op de juiste plek!
             teams: [
                 { naam: "S.V. Overvecht De Dreef 14-2", g: 5, w: 4, p: 13, plus: 28, min: 7, isEigenTeam: true },
                 { naam: "Sporting '70 14-2", g: 6, w: 4, p: 13, plus: 30, min: 20, isEigenTeam: false },
@@ -123,14 +197,12 @@
                 { naam: "Hercules 14-3", g: 5, w: 3, p: 10, plus: 20, min: 10, isEigenTeam: false }
             ],
 
-            // Pas hier de topscorers aan
             topscorers: [
                 { naam: "Mohammed K.", goals: 12 },
                 { naam: "Julian", goals: 8 },
                 { naam: "Yassin", goals: 5 }
             ],
 
-            // Pas hier je mededeling aan
             bericht: `
                 <strong>AANKOMEND ZATERDAG:</strong><br>
                 Beste ouders en jongens, we gaan weer strijden!<br><br>
@@ -141,11 +213,10 @@
         };
 
         // ==========================================
-        // DE AUTOMATISCHE FUNCTIES (HOEF JE NIET AAN TE ZITTEN)
+        // FUNCTIES
         // ==========================================
 
         function laadWebsite() {
-            // Sorteer teams op punten (p)
             const gesorteerd = MIJN_CLUB_DATA.teams.sort((a, b) => b.p - a.p);
             
             const tabel = document.getElementById('stand-tabel');
@@ -160,23 +231,23 @@
                     </tr>`;
             });
 
-            // Laad topscorers
             const lijst = document.getElementById('topscorers-lijst');
             lijst.innerHTML = '';
             MIJN_CLUB_DATA.topscorers.sort((a,b) => b.goals - a.goals).forEach((s, i) => {
                 lijst.innerHTML += `<div class="score-row"><span>${i+1}. ${s.naam}</span><span>${s.goals} goals</span></div>`;
             });
 
-            // Bericht
             document.getElementById('mededeling-box').innerHTML = MIJN_CLUB_DATA.bericht;
         }
 
-        function showPage(id) {
+        function showPage(id, btn) {
             document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
+
+            document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
         }
 
-        // Starten
         laadWebsite();
     </script>
 </body>
